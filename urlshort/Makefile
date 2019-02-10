@@ -1,4 +1,4 @@
-.PHONY: all
+.PHONY: run
 
-all:
+run:
 	go run ./cmd/urlshort/main.go
