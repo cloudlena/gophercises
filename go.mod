@@ -1,4 +1,4 @@
-module github.com/mastertinner/gophercises/urlshort
+module github.com/mastertinner/gophercises
 
 go 1.12
 
