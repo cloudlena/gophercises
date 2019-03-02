@@ -14,9 +14,21 @@ import (
 
 func main() {
 	var (
-		rulesYAMLFilePath   = flag.String("rules-yaml-file", "rules.yml", "the path to the YAML file containing the redirect rules")
-		rulesJSONFilePath   = flag.String("rules-json-file", "rules.json", "the path to the JSON file containing the redirect rules")
-		rulesBoltDBFilePath = flag.String("rules-boltdb-file", "rules.db", "the path to the BoltDB file containing the redirect rules")
+		rulesYAMLFilePath = flag.String(
+			"rules-yaml-file",
+			"rules.yml",
+			"the path to the YAML file containing the redirect rules",
+		)
+		rulesJSONFilePath = flag.String(
+			"rules-json-file",
+			"rules.json",
+			"the path to the JSON file containing the redirect rules",
+		)
+		rulesBoltDBFilePath = flag.String(
+			"rules-boltdb-file",
+			"rules.db",
+			"the path to the BoltDB file containing the redirect rules",
+		)
 	)
 	flag.Parse()
 
