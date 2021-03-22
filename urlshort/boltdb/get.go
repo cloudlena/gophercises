@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	bolt "github.com/etcd-io/bbolt"
 	"github.com/mastertinner/gophercises/urlshort"
+	bolt "go.etcd.io/bbolt"
 )
 
 // Get retrieves all rules from the DB.
@@ -24,7 +24,7 @@ func (s *ruleStore) Get(_ context.Context, path string) (urlshort.Rule, error) {
 		return nil
 	})
 	if err != nil {
-		return urlshort.Rule{}, fmt.Errorf("error viewing DB: %s", err)
+		return urlshort.Rule{}, fmt.Errorf("error viewing DB: %w", err)
 	}
 	return rule, nil
 }

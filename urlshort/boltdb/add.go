@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	bolt "github.com/etcd-io/bbolt"
 	"github.com/mastertinner/gophercises/urlshort"
+	bolt "go.etcd.io/bbolt"
 )
 
 // Add adds a rule to the store.
@@ -17,12 +17,12 @@ func (s *ruleStore) Add(_ context.Context, rule urlshort.Rule) error {
 		}
 		err := b.Put([]byte(rule.Path), []byte(rule.URL))
 		if err != nil {
-			return fmt.Errorf("error putting DB item: %s", err)
+			return fmt.Errorf("error putting DB item: %w", err)
 		}
 		return nil
 	})
 	if err != nil {
-		return fmt.Errorf("error updating DB: %s", err)
+		return fmt.Errorf("error updating DB: %w", err)
 	}
 	return nil
 }

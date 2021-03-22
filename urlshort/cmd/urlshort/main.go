@@ -3,13 +3,13 @@ package main
 import (
 	"flag"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 
-	bolt "github.com/etcd-io/bbolt"
 	"github.com/mastertinner/gophercises/urlshort"
 	"github.com/mastertinner/gophercises/urlshort/boltdb"
+	bolt "go.etcd.io/bbolt"
 )
 
 func main() {
@@ -41,27 +41,27 @@ func main() {
 	}
 	mapHandler := urlshort.MapHandler(pathsToUrls, mux)
 
-	rulesYAML, err := ioutil.ReadFile(*rulesYAMLFilePath)
+	rulesYAML, err := os.ReadFile(*rulesYAMLFilePath)
 	if err != nil {
-		log.Fatal(fmt.Errorf("error reading rules YAML file: %s", err))
+		log.Fatal(fmt.Errorf("error reading rules YAML file: %w", err))
 	}
 	yamlHandler, err := urlshort.YAMLHandler(rulesYAML, mapHandler)
 	if err != nil {
-		log.Fatal(fmt.Errorf("error making YAML handler: %s", err))
+		log.Fatal(fmt.Errorf("error making YAML handler: %w", err))
 	}
 
-	rulesJSON, err := ioutil.ReadFile(*rulesJSONFilePath)
+	rulesJSON, err := os.ReadFile(*rulesJSONFilePath)
 	if err != nil {
-		log.Fatal(fmt.Errorf("error reading rules JSON file: %s", err))
+		log.Fatal(fmt.Errorf("error reading rules JSON file: %w", err))
 	}
 	jsonHandler, err := urlshort.JSONHandler(rulesJSON, yamlHandler)
 	if err != nil {
-		log.Fatal(fmt.Errorf("error making JSON handler: %s", err))
+		log.Fatal(fmt.Errorf("error making JSON handler: %w", err))
 	}
 
 	db, err := bolt.Open(*rulesBoltDBFilePath, 0600, nil)
 	if err != nil {
-		log.Fatal(fmt.Errorf("error opening bolt DB connection: %s", err))
+		log.Fatal(fmt.Errorf("error opening bolt DB connection: %w", err))
 	}
 	defer db.Close()
 	initialBoltDBRules := []urlshort.Rule{
@@ -72,11 +72,11 @@ func main() {
 	}
 	store, err := boltdb.NewRuleStore(db, "rules")
 	if err != nil {
-		log.Fatal(fmt.Errorf("error creating BoltDB rule store: %s", err))
+		log.Fatal(fmt.Errorf("error creating BoltDB rule store: %w", err))
 	}
 	boltDBHandler, err := urlshort.StoreHandler(store, initialBoltDBRules, jsonHandler)
 	if err != nil {
-		log.Fatal(fmt.Errorf("error making BoltDB handler: %s", err))
+		log.Fatal(fmt.Errorf("error making BoltDB handler: %w", err))
 	}
 
 	fmt.Println("Starting the server on :8080")

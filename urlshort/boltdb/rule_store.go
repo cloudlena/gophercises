@@ -3,8 +3,8 @@ package boltdb
 import (
 	"fmt"
 
-	bolt "github.com/etcd-io/bbolt"
 	"github.com/mastertinner/gophercises/urlshort"
+	bolt "go.etcd.io/bbolt"
 )
 
 type ruleStore struct {
@@ -21,12 +21,12 @@ func NewRuleStore(db *bolt.DB, rulesBucket string) (urlshort.RuleStore, error) {
 	err := s.db.Update(func(tx *bolt.Tx) error {
 		_, err := tx.CreateBucketIfNotExists([]byte(s.rulesBucket))
 		if err != nil {
-			return fmt.Errorf("error creating %s bucket: %s", s.rulesBucket, err)
+			return fmt.Errorf("error creating %s bucket: %w", s.rulesBucket, err)
 		}
 		return nil
 	})
 	if err != nil {
-		return nil, fmt.Errorf("error updating DB: %s", err)
+		return nil, fmt.Errorf("error updating DB: %w", err)
 	}
 	return s, nil
 }

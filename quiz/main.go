@@ -36,7 +36,7 @@ func main() {
 
 	problems, err := readProblemsFromCSVFile(*csvFileName)
 	if err != nil {
-		log.Fatal(fmt.Errorf("error reading problems from CSV file: %s", err))
+		log.Fatal(fmt.Errorf("error reading problems from CSV file: %w", err))
 	}
 	if *doShuffle {
 		rand.Seed(time.Now().Unix())
@@ -55,7 +55,7 @@ func main() {
 			fmt.Print("Answer: ")
 			answer, err := inputReader.ReadString('\n')
 			if err != nil {
-				log.Fatal(fmt.Errorf("error reading user input: %s", err))
+				log.Fatal(fmt.Errorf("error reading user input: %w", err))
 			}
 			if purifyString(answer) == purifyString(p.correctAnswer) {
 				scr.correct++
@@ -88,17 +88,17 @@ func main() {
 func readProblemsFromCSVFile(fileName string) ([]problem, error) {
 	csvFile, err := os.Open(fileName)
 	if err != nil {
-		return nil, fmt.Errorf("error opening file: %s", err)
+		return nil, fmt.Errorf("error opening file: %w", err)
 	}
 	reader := csv.NewReader(bufio.NewReader(csvFile))
 	var problems []problem
 	for {
 		line, err := reader.Read()
 		if err != nil {
-			if err == io.EOF {
+			if errors.Is(err, io.EOF) {
 				break
 			}
-			return nil, fmt.Errorf("error reading CSV line: %s", err)
+			return nil, fmt.Errorf("error reading CSV line: %w", err)
 		}
 		if len(line) != 2 {
 			return nil, errors.New("invalid line in CSV")
@@ -109,6 +109,7 @@ func readProblemsFromCSVFile(fileName string) ([]problem, error) {
 		}
 		problems = append(problems, p)
 	}
+
 	return problems, nil
 }
 

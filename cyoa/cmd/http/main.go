@@ -12,7 +12,7 @@ import (
 )
 
 func main() {
-	var arcsFilePath = flag.String(
+	arcsFilePath := flag.String(
 		"arcs-file",
 		"gopher.json",
 		"the path to the JSON file containing the arcs of the story",
@@ -21,7 +21,7 @@ func main() {
 
 	arcs, err := cyoa.ArcsFromFile(*arcsFilePath)
 	if err != nil {
-		log.Fatal(fmt.Errorf("error getting arcs from file: %s", err))
+		log.Fatal(fmt.Errorf("error getting arcs from file: %w", err))
 	}
 
 	arcHandler := makeArcHandler(arcs)

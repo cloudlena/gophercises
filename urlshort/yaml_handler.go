@@ -27,7 +27,7 @@ func YAMLHandler(yml []byte, fallback http.Handler) (http.HandlerFunc, error) {
 	var rr []Rule
 	err := yaml.UnmarshalStrict(yml, &rr)
 	if err != nil {
-		return nil, fmt.Errorf("error unmarshaling YAML: %s", err)
+		return nil, fmt.Errorf("error unmarshaling YAML: %w", err)
 	}
 
 	pathsToURLs := make(map[string]string)

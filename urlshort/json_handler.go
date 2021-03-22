@@ -30,7 +30,7 @@ func JSONHandler(jsn []byte, fallback http.Handler) (http.HandlerFunc, error) {
 	var rr []Rule
 	err := json.Unmarshal(jsn, &rr)
 	if err != nil {
-		return nil, fmt.Errorf("error unmarshaling JSON: %s", err)
+		return nil, fmt.Errorf("error unmarshaling JSON: %w", err)
 	}
 
 	pathsToURLs := make(map[string]string)
