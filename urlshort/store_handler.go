@@ -20,7 +20,7 @@ func StoreHandler(store RuleStore, initialRules []Rule, fallback http.Handler) (
 	for _, r := range initialRules {
 		err := store.Add(context.Background(), r)
 		if err != nil {
-			return nil, fmt.Errorf("error adding rule to store: %s", err)
+			return nil, fmt.Errorf("error adding rule to store: %w", err)
 		}
 	}
 
